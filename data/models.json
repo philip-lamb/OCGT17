@@ -1,0 +1,12 @@
+{
+    "models": [
+        {
+            "modelid": 1,
+            "name": "Axes",
+            "modelpath": "models/axes.dat",
+            "position": [0.0, 0.0, -1.0],
+            "orientation": [0.0, 1.0, 0.0, 0.0]
+        }
+    ]
+}
+
