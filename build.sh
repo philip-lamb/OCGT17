@@ -88,6 +88,7 @@ arosg.cpp \
 
 FILES="\
 fonts \
+models \
 shaders \
 share/gdal/pcs.csv@/usr/local/share/gdal/pcs.csv \
 share/gdal/gcs.csv@/usr/local/share/gdal/gcs.csv \

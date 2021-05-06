@@ -70,6 +70,16 @@ Author(s): Philip Lamb
 	let UA = navigator.userAgent, isChrome=/\bChrome\/[0-9]+/.test(UA);
 	let useOutlineTechnique = !isChrome;
 	
+	function fetchJSON(uri) {
+	    return fetch((uri)).then(response => {
+            return response.json();
+        }).then(data => {
+            return data;
+        }).catch(err => {
+            console.error('Error fetching \'' + uri + '\', ', err);
+        });
+	}
+	
 	function htmlEntities(str) {
         return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
@@ -293,7 +303,7 @@ Author(s): Philip Lamb
         for (const i of models) {
             i.modelindex = arOsgMod.ccall('arOSGLoadModel', 'number', ['number', 'string'], [arOsg, i.modelpath]);
             if (i.modelindex < 0) {
-                console.error('Error loading model \'' + i.path + '\'.');
+                console.error('Error loading model \'' + i.modelpath + '\'.');
             } else {
                 console.log('Loaded model \'' + i.modelpath + '\' with index ' + i.modelindex + '.');
                 
