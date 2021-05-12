@@ -3,8 +3,17 @@
         {
             "modelid": 1,
             "name": "Axes",
+            "type": "dat",
             "modelpath": "models/axes.dat",
             "position": [0.0, 0.0, -1.0],
+            "orientation": [0.0, 1.0, 0.0, 0.0]
+        },
+        {
+            "modelid": 2,
+            "name": "Test DEM",
+            "type": "dem",
+            "modelpath": "models/test_dem.tif",
+            "position": [0.0, 1.0, -1.0],
             "orientation": [0.0, 1.0, 0.0, 0.0]
         }
     ]

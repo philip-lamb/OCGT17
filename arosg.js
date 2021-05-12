@@ -472,7 +472,7 @@ Module['FS_createPath']("/usr/local/share", "gdal", true, true);
     }
   
    }
-   loadPackage({"files": [{"filename": "/fonts/Vera.ttf", "start": 0, "end": 65932, "audio": 0}, {"filename": "/models/hall_empty.dat", "start": 65932, "end": 66013, "audio": 0}, {"filename": "/models/.DS_Store", "start": 66013, "end": 74209, "audio": 0}, {"filename": "/models/axes.osg", "start": 74209, "end": 145300, "audio": 0}, {"filename": "/models/hall_empty.glb", "start": 145300, "end": 278052, "audio": 0}, {"filename": "/models/axes.dat", "start": 278052, "end": 278112, "audio": 0}, {"filename": "/shaders/osgText_Text.vert", "start": 278112, "end": 278464, "audio": 0}, {"filename": "/shaders/osgText_Text.frag", "start": 278464, "end": 286084, "audio": 0}, {"filename": "/usr/local/share/gdal/pcs.csv", "start": 286084, "end": 1005355, "audio": 0}, {"filename": "/usr/local/share/gdal/gcs.csv", "start": 1005355, "end": 1058084, "audio": 0}, {"filename": "/usr/local/share/gdal/gcs.override.csv", "start": 1058084, "end": 1058597, "audio": 0}, {"filename": "/usr/local/share/gdal/prime_meridian.csv", "start": 1058597, "end": 1060282, "audio": 0}, {"filename": "/usr/local/share/gdal/unit_of_measure.csv", "start": 1060282, "end": 1081762, "audio": 0}, {"filename": "/usr/local/share/gdal/ellipsoid.csv", "start": 1081762, "end": 1095686, "audio": 0}, {"filename": "/usr/local/share/gdal/coordinate_axis.csv", "start": 1095686, "end": 1103664, "audio": 0}, {"filename": "/usr/local/share/gdal/vertcs.override.csv", "start": 1103664, "end": 1104745, "audio": 0}, {"filename": "/usr/local/share/gdal/vertcs.csv", "start": 1104745, "end": 1116676, "audio": 0}, {"filename": "/usr/local/share/gdal/compdcs.csv", "start": 1116676, "end": 1125594, "audio": 0}, {"filename": "/usr/local/share/gdal/geoccs.csv", "start": 1125594, "end": 1138355, "audio": 0}, {"filename": "/usr/local/share/gdal/stateplane.csv", "start": 1138355, "end": 1148715, "audio": 0}], "remote_package_size": 1148715, "package_uuid": "6d8aeb57-bbec-4297-a3b9-46191faceafa"});
+   loadPackage({"files": [{"filename": "/fonts/Vera.ttf", "start": 0, "end": 65932, "audio": 0}, {"filename": "/models/hall_empty.dat", "start": 65932, "end": 66013, "audio": 0}, {"filename": "/models/.DS_Store", "start": 66013, "end": 74209, "audio": 0}, {"filename": "/models/axes.osg", "start": 74209, "end": 145300, "audio": 0}, {"filename": "/models/hall_empty.glb", "start": 145300, "end": 278052, "audio": 0}, {"filename": "/models/axes.dat", "start": 278052, "end": 278112, "audio": 0}, {"filename": "/models/test_dem.tif", "start": 278112, "end": 16294637, "audio": 0}, {"filename": "/shaders/osgText_Text.vert", "start": 16294637, "end": 16294989, "audio": 0}, {"filename": "/shaders/osgText_Text.frag", "start": 16294989, "end": 16302609, "audio": 0}, {"filename": "/usr/local/share/gdal/pcs.csv", "start": 16302609, "end": 17021880, "audio": 0}, {"filename": "/usr/local/share/gdal/gcs.csv", "start": 17021880, "end": 17074609, "audio": 0}, {"filename": "/usr/local/share/gdal/gcs.override.csv", "start": 17074609, "end": 17075122, "audio": 0}, {"filename": "/usr/local/share/gdal/prime_meridian.csv", "start": 17075122, "end": 17076807, "audio": 0}, {"filename": "/usr/local/share/gdal/unit_of_measure.csv", "start": 17076807, "end": 17098287, "audio": 0}, {"filename": "/usr/local/share/gdal/ellipsoid.csv", "start": 17098287, "end": 17112211, "audio": 0}, {"filename": "/usr/local/share/gdal/coordinate_axis.csv", "start": 17112211, "end": 17120189, "audio": 0}, {"filename": "/usr/local/share/gdal/vertcs.override.csv", "start": 17120189, "end": 17121270, "audio": 0}, {"filename": "/usr/local/share/gdal/vertcs.csv", "start": 17121270, "end": 17133201, "audio": 0}, {"filename": "/usr/local/share/gdal/compdcs.csv", "start": 17133201, "end": 17142119, "audio": 0}, {"filename": "/usr/local/share/gdal/geoccs.csv", "start": 17142119, "end": 17154880, "audio": 0}, {"filename": "/usr/local/share/gdal/stateplane.csv", "start": 17154880, "end": 17165240, "audio": 0}], "remote_package_size": 17165240, "package_uuid": "2202ddf7-cf67-46c8-b9ef-419e86456ce3"});
   
   })();
   
@@ -2075,8 +2075,8 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  2120304: function() {throw 'Canceled!'},  
- 2120322: function($0, $1) {setTimeout(function() { __emscripten_do_dispatch_to_thread($0, $1); }, 0);}
+  2120352: function() {throw 'Canceled!'},  
+ 2120370: function($0, $1) {setTimeout(function() { __emscripten_do_dispatch_to_thread($0, $1); }, 0);}
 };
 function initPthreadsJS(){ PThread.initRuntime(); }
 
@@ -11799,6 +11799,9 @@ var _arOSGSetModelTransparency = Module["_arOSGSetModelTransparency"] = createEx
 var _arOSGSetModelSelectable = Module["_arOSGSetModelSelectable"] = createExportWrapper("arOSGSetModelSelectable");
 
 /** @type {function(...*):?} */
+var _arOSGCreateDEMModel = Module["_arOSGCreateDEMModel"] = createExportWrapper("arOSGCreateDEMModel");
+
+/** @type {function(...*):?} */
 var _arOSGUnloadModel = Module["_arOSGUnloadModel"] = createExportWrapper("arOSGUnloadModel");
 
 /** @type {function(...*):?} */
@@ -12085,8 +12088,8 @@ var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_i
 /** @type {function(...*):?} */
 var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
 
-var __emscripten_allow_main_runtime_queued_calls = Module['__emscripten_allow_main_runtime_queued_calls'] = 2120292;
-var __emscripten_main_thread_futex = Module['__emscripten_main_thread_futex'] = 2145472;
+var __emscripten_allow_main_runtime_queued_calls = Module['__emscripten_allow_main_runtime_queued_calls'] = 2120340;
+var __emscripten_main_thread_futex = Module['__emscripten_main_thread_futex'] = 2145520;
 function invoke_ii(index,a1) {
   var sp = stackSave();
   try {

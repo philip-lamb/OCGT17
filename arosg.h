@@ -220,6 +220,10 @@ AR_OSG_EXTERN     int arOSGLoadModel2(AROSG *arOsg, const char *modelFilePath, c
 */
 AR_OSG_EXTERN     int arOSGUnloadModel(AROSG *arOsg, const int index);
 
+AR_OSG_EXTERN     int arOSGCreateCubeModel(AROSG *arOsg);
+
+AR_OSG_EXTERN     int arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath);
+
 /*!
     @function
     @abstract   Show or hide an OSG-based model.

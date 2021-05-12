@@ -737,6 +737,34 @@ extern "C" {
         return (index);
     }
     
+    int AR_OSG_EXTDEF arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath)
+    {
+        if (!arOsg) return (-1);
+#ifdef __EMSCRIPTEN__
+        if (emscripten_webgl_make_context_current(arOsg->webGLCtx) != EMSCRIPTEN_RESULT_SUCCESS) {
+            ARLOGw("Error in emscripten_webgl_make_context_current().\n");
+        };
+#endif
+        
+        osg::setNotifyLevel(osg::DEBUG_INFO);
+        osg::ref_ptr<osg::HeightField> heightField = osgDB::readRefHeightFieldFile(std::string(demFilePath) + std::string(".gdal"));
+        if (!heightField.valid())
+        {
+            ARLOGe("Unable to read DEM file '%s'.\n", demFilePath);
+            return (-1);
+        }
+        heightField->setXInterval(0.001f); // 1 mm
+        heightField->setYInterval(0.001f); // 1 mm
+        heightField->setSkirtHeight(0.1f); // 100 mm
+        
+        osg::ref_ptr<osg::Geode> model = new osg::Geode();
+        model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+        //model->getOrCreateStateSet()->setTextureMode(GL_TEXTURE_2D, osg::StateAttribute::OFF);
+        model->addDrawable(new osg::ShapeDrawable(heightField.get()));
+        osg::setNotifyLevel(osg::NOTICE); 
+        return arOSGLoadInternal(arOsg, model, nullptr, nullptr, nullptr);
+    }
+    
     int AR_OSG_EXTDEF arOSGUnloadModel(AROSG *arOsg, const int index)
     {
         if (!arOsg) return (-1);
