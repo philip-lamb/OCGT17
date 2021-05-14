@@ -222,7 +222,20 @@ AR_OSG_EXTERN     int arOSGUnloadModel(AROSG *arOsg, const int index);
 
 AR_OSG_EXTERN     int arOSGCreateCubeModel(AROSG *arOsg);
 
-AR_OSG_EXTERN     int arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath);
+/*!
+    @function
+    @abstract   Create a model from a DEM (digital elevation model) file.
+    @discussion
+        Frees the memory associated with an OSG model.
+    @param      arOsg Pointer to the AROSG settings structure from which the model should be loaded. (See arOSGInit().)
+    @param      demFilePath A string holding the path to a file readable by OSG (as an image containing DEM height field data, e.g. .tiff or .geotiff).
+    @param      scaleFactor The scale factor between the DEM file and the size to be displayed in-scene.
+        E.g. to create a model 2m per side from a 2000x2000 DEM with 25m-per-pixel resolution, each pixel must be 0.001m,
+        so supply the value 25000 for scale.
+    @result     An index value with which the loaded model can be referred to, in the range [0, maxModels - 1],
+        or, in case of error, a value less than 0.
+*/
+AR_OSG_EXTERN     int arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath, const float scaleFactor);
 
 /*!
     @function

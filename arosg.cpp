@@ -40,6 +40,7 @@
 #include "arosg.h"
 #include <stdio.h>
 #include <string.h>
+#include <cmath>
 #include <osg/GL>
 #include <osg/Node>
 #include <osg/ShapeDrawable>
@@ -737,7 +738,7 @@ extern "C" {
         return (index);
     }
     
-    int AR_OSG_EXTDEF arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath)
+    int AR_OSG_EXTDEF arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath, const float scaleFactor)
     {
         if (!arOsg) return (-1);
 #ifdef __EMSCRIPTEN__
@@ -747,20 +748,25 @@ extern "C" {
 #endif
         
         osg::setNotifyLevel(osg::DEBUG_INFO);
-        osg::ref_ptr<osg::HeightField> heightField = osgDB::readRefHeightFieldFile(std::string(demFilePath) + std::string(".gdal"));
-        if (!heightField.valid())
+        osg::ref_ptr<osg::HeightField> hf = osgDB::readRefHeightFieldFile(std::string(demFilePath) + std::string(".gdal"));
+        if (!hf.valid())
         {
             ARLOGe("Unable to read DEM file '%s'.\n", demFilePath);
             return (-1);
         }
-        heightField->setXInterval(0.001f); // 1 mm
-        heightField->setYInterval(0.001f); // 1 mm
-        heightField->setSkirtHeight(0.1f); // 100 mm
+        // Origin is bottom-left.
+        ARLOGi("%dx%d heightfield loaded: Xinterval:%f, Yinterval:%f, Origin:{%f, %f, %f}, Rotation:{%f, %f, %f, %f}, SkirtHeight:%f, BorderWidth:%d\n", hf->getNumColumns(), hf->getNumRows(), hf->getXInterval(), hf->getYInterval(), hf->getOrigin().x(), hf->getOrigin().y(), hf->getOrigin().z(), hf->getRotation().x(), hf->getRotation().y(), hf->getRotation().z(), hf->getRotation().w(), hf->getSkirtHeight(), hf->getBorderWidth());
+        hf->setXInterval(hf->getXInterval()/scaleFactor);
+        hf->setYInterval(hf->getYInterval()/scaleFactor);
+        float xsize = hf->getNumColumns()*hf->getXInterval();
+        float ysize = hf->getNumRows()*hf->getYInterval();
+        hf->setOrigin(osg::Vec3f(-0.5f*xsize, -0.5f*ysize, 0.0f));
+        hf->setSkirtHeight(0.05f * fmaxf(xsize, ysize));
         
         osg::ref_ptr<osg::Geode> model = new osg::Geode();
-        model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
+        //model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
         //model->getOrCreateStateSet()->setTextureMode(GL_TEXTURE_2D, osg::StateAttribute::OFF);
-        model->addDrawable(new osg::ShapeDrawable(heightField.get()));
+        model->addDrawable(new osg::ShapeDrawable(hf.get()));
         osg::setNotifyLevel(osg::NOTICE); 
         return arOSGLoadInternal(arOsg, model, nullptr, nullptr, nullptr);
     }
