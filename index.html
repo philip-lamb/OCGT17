@@ -302,14 +302,14 @@ Author(s): Philip Lamb
         // Load models.
         for (const i of models) {
             if (i.type === 'dem') {
-                i.modelindex = arOsgMod.ccall('arOSGCreateDEMModel', 'number', ['number', 'string', 'number'], [arOsg, i.modelpath, 25000]);
+                i.modelindex = arOsgMod.ccall('arOSGCreateDEMModel', 'number', ['number', 'string', 'number', 'number'], [arOsg, i.modelpath, 25000, 10.0]);
             } else {
                 i.modelindex = arOsgMod.ccall('arOSGLoadModel', 'number', ['number', 'string'], [arOsg, i.modelpath]);
             }
             if (i.modelindex < 0) {
                 console.error('Error loading model \'' + i.modelpath + '\'.');
             } else {
-                console.log('Loaded model \'' + i.modelpath + '\' with index ' + i.modelindex + '.');
+                console.log('Loaded model \'' + i.modelpath + '\' with index ' + i.modelindex + ' at position {' + i.position + '}.');
                 
                 // Set initial model orientation and position in scene.
                 let modelq = quat.create();

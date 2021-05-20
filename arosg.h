@@ -232,10 +232,11 @@ AR_OSG_EXTERN     int arOSGCreateCubeModel(AROSG *arOsg);
     @param      scaleFactor The scale factor between the DEM file and the size to be displayed in-scene.
         E.g. to create a model 2m per side from a 2000x2000 DEM with 25m-per-pixel resolution, each pixel must be 0.001m,
         so supply the value 25000 for scale.
+    @param      heightExaggerationFactor A factor by which to exaggerate the height, e.g. 10.0f.
     @result     An index value with which the loaded model can be referred to, in the range [0, maxModels - 1],
         or, in case of error, a value less than 0.
 */
-AR_OSG_EXTERN     int arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath, const float scaleFactor);
+AR_OSG_EXTERN     int arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath, const float scaleFactor, const float heightExaggerationFactor);
 
 /*!
     @function

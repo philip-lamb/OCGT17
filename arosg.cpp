@@ -738,7 +738,7 @@ extern "C" {
         return (index);
     }
     
-    int AR_OSG_EXTDEF arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath, const float scaleFactor)
+    int AR_OSG_EXTDEF arOSGCreateDEMModel(AROSG *arOsg, const char *demFilePath, const float scaleFactor, const float heightExaggerationFactor)
     {
         if (!arOsg) return (-1);
 #ifdef __EMSCRIPTEN__
@@ -762,6 +762,8 @@ extern "C" {
         float ysize = hf->getNumRows()*hf->getYInterval();
         hf->setOrigin(osg::Vec3f(-0.5f*xsize, -0.5f*ysize, 0.0f));
         hf->setSkirtHeight(0.05f * fmaxf(xsize, ysize));
+        osg::FloatArray* heights = hf->getFloatArray();
+        for (auto& f : *heights) f = f /scaleFactor * heightExaggerationFactor;
         
         osg::ref_ptr<osg::Geode> model = new osg::Geode();
         //model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
