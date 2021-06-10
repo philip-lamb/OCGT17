@@ -55,7 +55,7 @@ Author(s): Philip Lamb
 	// If requested, use the polyfill to provide support for mobile devices
 	// and devices which only support WebVR.
 	import WebXRPolyfill from './js/third-party/webxr-polyfill/build/webxr-polyfill.module.js';
-	if (QueryArgs.getBool('usePolyfill', true)) {
+	if (QueryArgs.getBool('usePolyfill', false)) {
 	    let polyfill = new WebXRPolyfill();
 	    document.getElementById("native").innerHTML = 'Using WebXR polyfill. <a href="?usePolyfill=0">Toggle</a>';
 	} else {
@@ -231,7 +231,7 @@ Author(s): Philip Lamb
             onRequestSession: (() => onRequestSession('immersive-ar')),
             onEndSession: onEndSession,
             textEnterXRTitle: "START AR",
-            textXRNotFoundTitle: "XR NOT FOUND",
+            textXRNotFoundTitle: "XR NOT READY",
             textExitXRTitle: "EXIT  AR"
         });
         document.getElementById('button').appendChild(xrButton.domElement);
@@ -252,7 +252,7 @@ Author(s): Philip Lamb
                     onRequestSession: (() => onRequestSession('immersive-vr')),
                     onEndSession: onEndSession,
                     textEnterXRTitle: "START VR",
-                    textXRNotFoundTitle: "XR NOT FOUND",
+                    textXRNotFoundTitle: "XR NOT READY",
                     textExitXRTitle: "EXIT  VR"
                 });
                 document.getElementById('button').appendChild(xrButton.domElement);
@@ -382,7 +382,7 @@ Author(s): Philip Lamb
                 session.requestAnimationFrame(onXRFrame);
             });
         });
-        document.getElementById("prompt").innerHTML = "Service task started.";
+        document.getElementById("prompt").innerHTML = "Immersive session started.";
     }
 	
 	// One-time scene clean up that requires an active GL context.
@@ -408,7 +408,7 @@ Author(s): Philip Lamb
     function onSessionEnded(event) {
         // Here we should discard the WebGL context too.
         xrButton.setSession(null);
-        document.getElementById("prompt").innerHTML = "Service task session ended. Choose again to restart.";
+        document.getElementById("prompt").innerHTML = "Immersive session ended. Choose again to restart.";
     }
 	
 	// Handle WebXR "select" events.
