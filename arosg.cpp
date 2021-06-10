@@ -442,7 +442,7 @@ extern "C" {
 
         arOsg->logger = new Logger;
         osg::setNotifyHandler(arOsg->logger);
-        osg::setNotifyLevel(osg::NOTICE);
+        osg::setNotifyLevel(osg::INFO);
             
         arOsg->sg = new osg::Group;
         arOsg->prevIndex = maxModels - 1;
@@ -453,10 +453,12 @@ extern "C" {
         arOsg->_vertColorProgram = new osg::Program();
         arOsg->_vertColorProgram->addShader( new osg::Shader(osg::Shader::VERTEX, ColorShaderVert));
         arOsg->_vertColorProgram->addShader( new osg::Shader(osg::Shader::FRAGMENT, ColorShaderFrag));
+        arOsg->_vertColorProgram->setName("AROSG ColorShaderProgram");
         
         arOsg->_textureProgram = new osg::Program();
         arOsg->_textureProgram->addShader( new osg::Shader(osg::Shader::VERTEX, TextureShaderVert));
         arOsg->_textureProgram->addShader( new osg::Shader(osg::Shader::FRAGMENT, TextureShaderFrag));
+        arOsg->_textureProgram->setName("AROSG TextureShaderProgram");
 #endif
 
         return (arOsg);
@@ -636,8 +638,11 @@ extern "C" {
             /* +z */ {3, 2, 1, 0}, /* -y */ {2, 3, 7, 6}, /* +y */ {0, 1, 5, 4},
             /* -x */ {3, 0, 4, 7}, /* +x */ {1, 2, 6, 5}, /* -z */ {4, 5, 6, 7} };
         osg::ref_ptr<osg::Geode> model = new osg::Geode();
+#if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
         model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-        //model->getOrCreateStateSet()->setTextureMode(GL_TEXTURE_2D, osg::StateAttribute::OFF);
+#else
+        model->getOrCreateStateSet()->removeDefine("LIGHTING");
+#endif
         osg::Geometry* facesGeom = new osg::Geometry();
         facesGeom->setVertexArray(new osg::Vec3Array(8, (osg::Vec3 *)cube_vertices));
         facesGeom->setColorArray(new osg::Vec4Array(8, (osg::Vec4 *)cube_vertex_colors));
@@ -730,9 +735,9 @@ extern "C" {
         int index = arOSGLoadModel2(arOsg, modelFilePath, translation, rotation, scale, texturesFlag);
         
         if (index >= 0) {
-            if (!lightingFlag) arOSGSetModelLighting(arOsg, index, 0);
+            if (lightingFlag != -1) arOSGSetModelLighting(arOsg, index, lightingFlag);
             if (transparencyFlag != -1) arOSGSetModelTransparency(arOsg, index, transparencyFlag);
-            if (selectableFlag != 1) arOSGSetModelSelectable(arOsg, index, selectableFlag);
+            if (selectableFlag != -1) arOSGSetModelSelectable(arOsg, index, selectableFlag);
         }
         
         return (index);
@@ -766,8 +771,11 @@ extern "C" {
         for (auto& f : *heights) f = f /scaleFactor * heightExaggerationFactor;
         
         osg::ref_ptr<osg::Geode> model = new osg::Geode();
-        //model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::OFF);
-        //model->getOrCreateStateSet()->setTextureMode(GL_TEXTURE_2D, osg::StateAttribute::OFF);
+#if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
+        model->getOrCreateStateSet()->setMode(GL_LIGHTING, osg::StateAttribute::ON);
+#else
+        model->getOrCreateStateSet()->setDefine("LIGHTING");
+#endif
         model->addDrawable(new osg::ShapeDrawable(hf.get()));
         osg::setNotifyLevel(osg::NOTICE); 
         return arOSGLoadInternal(arOsg, model, nullptr, nullptr, nullptr);
@@ -843,7 +851,15 @@ extern "C" {
             return (-1);
         }
         
+#if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
         arOsg->models[index]->getOrCreateStateSet()->setMode(GL_LIGHTING, (lit ? osg::StateAttribute::ON : osg::StateAttribute::OFF));
+#else
+        if (lit) {
+            arOsg->models[index]->getOrCreateStateSet()->setDefine("LIGHTING");
+        } else {
+            arOsg->models[index]->getOrCreateStateSet()->removeDefine("LIGHTING");
+        }
+#endif
         return (0);
     }
     
@@ -861,7 +877,11 @@ extern "C" {
             return (-1);
         }
         
+#if defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
         *lit = (arOsg->models[index]->getOrCreateStateSet()->getMode(GL_LIGHTING) != osg::StateAttribute::OFF);
+#else
+        *lit = (arOsg->models[index]->getOrCreateStateSet()->getDefinePair("LIGHTING") != 0);
+#endif
         return (0);
     }
     
