@@ -10,9 +10,9 @@
         },
         {
             "modelid": 2,
-            "name": "Test DEM",
+            "name": "Landkreis Mayen-Koblenz",
             "type": "dem",
-            "modelpath": "models/test_dem.tif",
+            "modelpath": "models/mayen-koblenz.tif",
             "position": [0.0, 1.0, -1.5],
             "orientation": [-90.0, 1.0, 0.0, 0.0]
         }

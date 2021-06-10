@@ -302,7 +302,7 @@ Author(s): Philip Lamb
         // Load models.
         for (const i of models) {
             if (i.type === 'dem') {
-                i.modelindex = arOsgMod.ccall('arOSGCreateDEMModel', 'number', ['number', 'string', 'number', 'number'], [arOsg, i.modelpath, 25000, 10.0]);
+                i.modelindex = arOsgMod.ccall('arOSGCreateDEMModel', 'number', ['number', 'string', 'number', 'number'], [arOsg, i.modelpath, 25000, 5.0]);
             } else {
                 i.modelindex = arOsgMod.ccall('arOSGLoadModel', 'number', ['number', 'string'], [arOsg, i.modelpath]);
             }
