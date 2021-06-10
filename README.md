@@ -55,6 +55,7 @@ The files preloaded in this way include:
 - [`models/`](models/) - The 3D models used in the app, in a supported format which includes OSG native, but also GeoTIFF (.tif) and glTF binary format (.glb).
 - [`fonts/`](fonts/) - The font(s) used by OSG to render in-scene.
 - [`shaders/`](shaders/) - Shaders required by OSG itself (i.e. in addition to the shaders we use in our app are directly are compiled into `shaders.h`). At present, just shaders required for osgText's text rendering.
+- [`share/`](share/) - Other data required by OSG itself. At present, just GDAL's config files. These are remapped into `/usr/local/share` in the wasm virtual filesystem by the build script, where they can be read by GDAL.
 
 AROSG allows for the use of a text-based `.dat` file to specify some global transformations and settings to be applied to each model. This allows for easy scaling and positioning of models with different scales and/or origins or axes.
  

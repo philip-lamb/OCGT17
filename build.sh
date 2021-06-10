@@ -110,7 +110,7 @@ OUT="arosg.js"
 OSG_VERSION="3.7.0"
 OSG_ROOT="${OURDIR}/dependencies/openscenegraph-${OSG_VERSION}-wasm"
 if [ ! -d "${OSG_ROOT}" ] ; then
-    curl --location "https://github.com/Brainwaive/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bethar/openscenegraph-${OSG_VERSION}-wasm.zip" -o osg.zip
+    curl --location "https://github.com/EtharInc/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bethar/openscenegraph-${OSG_VERSION}-wasm.zip" -o osg.zip
     unzip osg.zip -d ${OURDIR}/dependencies
     rm osg.zip
 fi
