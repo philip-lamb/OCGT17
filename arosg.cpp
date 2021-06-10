@@ -752,6 +752,7 @@ extern "C" {
         };
 #endif
         
+        osg::NotifySeverity nl = osg::getNotifyLevel();
         osg::setNotifyLevel(osg::DEBUG_INFO);
         osg::ref_ptr<osg::HeightField> hf = osgDB::readRefHeightFieldFile(std::string(demFilePath) + std::string(".gdal"));
         if (!hf.valid())
@@ -777,7 +778,14 @@ extern "C" {
         model->getOrCreateStateSet()->setDefine("LIGHTING");
 #endif
         model->addDrawable(new osg::ShapeDrawable(hf.get()));
-        osg::setNotifyLevel(osg::NOTICE); 
+        osg::setNotifyLevel(nl);
+#  if !defined(OSG_GL_FIXED_FUNCTION_AVAILABLE)
+        model->getOrCreateStateSet()->setAttributeAndModes(arOsg->_vertColorProgram, osg::StateAttribute::ON);
+        optimizeNode(model);
+        //VBOSetupVisitor vbo;
+        //model->accept(vbo);
+#endif
+
         return arOSGLoadInternal(arOsg, model, nullptr, nullptr, nullptr);
     }
     
