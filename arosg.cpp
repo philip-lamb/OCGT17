@@ -73,6 +73,7 @@
 #endif
 #ifdef __EMSCRIPTEN__
 #  include <emscripten/html5.h>
+#  include "emscripten_err_desc.h"
 #endif
 
 #define AR_OSG_NODE_MASK_DRAWABLE 0x01
@@ -421,17 +422,17 @@ extern "C" {
         EmscriptenWebGLContextAttributes attrs;
         emscripten_webgl_init_context_attributes(&attrs);
         attrs.enableExtensionsByDefault = 1;
-//         attrs.majorVersion = 2;
-//         attrs.minorVersion = 0;
+        attrs.majorVersion = 2;
+        attrs.minorVersion = 0;
 //         attr.depth = 1;
 //         attr.alpha = attr.stencil = attr.antialias = 0;
         arOsg->webGLCtx = emscripten_webgl_create_context("#canvas", &attrs);
-        if (arOsg->webGLCtx == 0) {
-            ARLOGe("arOSGInit: Can't create WebGL context.\n");
+        if (arOsg->webGLCtx <= 0) {
+            ARLOGe("arOSGInit: Can't create WebGL context. Emscripten error: '%s'\n", emscripten_err_desc(arOsg->webGLCtx));
             free (arOsg);
             return (nullptr);    
         } else {
-            ARLOGi("arOSGInit got WebGL context %d.\n", arOsg->webGLCtx);
+            ARLOGi("arOSGInit got WebGL context 0x%lx.\n", arOsg->webGLCtx);
             if (emscripten_webgl_make_context_current(arOsg->webGLCtx) != EMSCRIPTEN_RESULT_SUCCESS) {
                 ARLOGe("Error in emscripten_webgl_make_context_current().\n");
                 free (arOsg);
@@ -442,6 +443,7 @@ extern "C" {
 
         arOsg->logger = new Logger;
         osg::setNotifyHandler(arOsg->logger);
+        //osg::setNotifyLevel(osg::NOTICE);
         osg::setNotifyLevel(osg::INFO);
             
         arOsg->sg = new osg::Group;

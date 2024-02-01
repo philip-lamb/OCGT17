@@ -47,7 +47,7 @@ done
 #
 
 # The wasm ports we use:
-OPTIONS="-s USE_ZLIB=1 -s USE_LIBJPEG=1 -s USE_LIBPNG=1 -s USE_FREETYPE=1 -s USE_PTHREADS=1"
+OPTIONS="-s USE_ZLIB=1 -s USE_LIBJPEG=1 -s USE_LIBPNG=1 -s USE_FREETYPE=1 -s USE_PTHREADS=1 -s EXIT_RUNTIME=1"
 
 # In this app, fixed memory size is more performant, but you can opt for memory growth if preferred:
 if [ $MEMORY_GROWTH ] ; then
@@ -59,10 +59,10 @@ fi
 # GL emulation options:
 OPTIONS="${OPTIONS} -s FULL_ES2=1 -s FULL_ES3=1"
 OPTIONS="${OPTIONS} -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2"
-OPTIONS="${OPTIONS} -s GL_PREINITIALIZED_CONTEXT=1"
+OPTIONS="${OPTIONS} -s GL_PREINITIALIZED_CONTEXT=1 -s GL_ENABLE_GET_PROC_ADDRESS"
 
 # Build as a wasm es6 module with multithreading, and ensure ccall and cwrap are kept during linking.
-OPTIONS="${OPTIONS} -s ENVIRONMENT=web,worker -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME=createModule -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+OPTIONS="${OPTIONS} -s ENVIRONMENT=web,worker -s EXPORT_ES6=1 -s MODULARIZE=1 -s EXPORT_NAME=createModule -s EXPORTED_RUNTIME_METHODS=['ccall','cwrap'] -s EXPORTED_FUNCTIONS=['_malloc','_free','___cxa_atexit']"
 
 if [ -z ${DEBUG+Debug} ]; then
     OPTIONS="${OPTIONS} -DDEBUG"
@@ -83,6 +83,7 @@ OPTIONS="${OPTIONS} -g3"
 SOURCES="\
 mtx.c \
 ar_compat.c \
+emscripten_err_desc.c \
 arosg.cpp \
 "
 
@@ -110,7 +111,7 @@ OUT="arosg.js"
 OSG_VERSION="3.7.0"
 OSG_ROOT="${OURDIR}/dependencies/openscenegraph-${OSG_VERSION}-wasm"
 if [ ! -d "${OSG_ROOT}" ] ; then
-    curl --location "https://github.com/EtharInc/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bethar/openscenegraph-${OSG_VERSION}-wasm.zip" -o osg.zip
+    curl --location "https://github.com/philip-lamb/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bgltf%2Bgdal/openscenegraph-${OSG_VERSION}-wasm.zip" -o osg.zip
     unzip osg.zip -d ${OURDIR}/dependencies
     rm osg.zip
 fi

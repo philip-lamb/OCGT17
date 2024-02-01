@@ -37,7 +37,7 @@ Author(s): Philip Lamb
     try {
         let test = new SharedArrayBuffer(1);
     } catch(error) {
-        document.getElementById("prompt").innerHTML = "Multi-threaded WebAssembly is required, but is not available because shared memory is not enabled in your browser. On Firefox, please enable javascript.options.shared_memory in <a href=\"about:config\">about:config</a>, or on Chrome please enable <a href=\"chrome://flags/#enable-webassembly-threads\">chrome://flags/#enable-webassembly-threads</a>.";
+        document.getElementById("prompt").innerHTML = "Multi-threaded WebAssembly is required, but is not available in your browser. This may be because of security requirements on the web server. See <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements\">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements</a>.";
         throw error;
     }
 
@@ -188,9 +188,7 @@ Author(s): Philip Lamb
 	// Create a WebGL context to render with, initialized to be compatible
 	// with the XRDisplay we're presenting to.
 	// Our outline technique needs a stencil buffer.
-	let glAttribs = {xrCompatible: true, alpha: true, depth:true, stencil: true, antialias: true};
-	// WebGL 2 in wasm uses SharedArrayBuffer, which is incompatible with the polyfill.
-	if (!QueryArgs.getBool('usePolyfill', true)) glAttribs.webgl2 = true;
+	let glAttribs = {xrCompatible: true, alpha: true, depth:true, stencil: true, antialias: true, webgl2:true};
 	arOsgModSettings.preinitializedWebGLContext = createWebGLContext(arOsgModSettings.canvas, glAttribs);
 	let contextAttributes = arOsgModSettings.preinitializedWebGLContext.getContextAttributes();
     if (!contextAttributes.stencil) {
@@ -279,8 +277,9 @@ Author(s): Philip Lamb
         if (!gl) return '(no GL: ' + arOsgMod.webGLErrorReason + ')';
     
         let glInfo = '';
-        let debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-        if (debugInfo) glInfo += gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) + ' ' + gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) + '/';
+        // WEBGL_debug_renderer_info is deprecated.
+        //let debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        //if (debugInfo) glInfo += gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) + ' ' + gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) + '/';
         glInfo += gl.getParameter(gl.VENDOR) + ' ' + gl.getParameter(gl.RENDERER);
         glInfo += ' ' + gl.getParameter(gl.VERSION);
         glInfo += ', ' + gl.getParameter(gl.SHADING_LANGUAGE_VERSION);

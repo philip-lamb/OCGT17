@@ -75,7 +75,7 @@ All of these licenses are compatible with use in a proprietary and/or commercial
 What | Minimum version | Where to download 
 ---- | --------------- | ------------
 Emscripten | | <https://emscripten.org/docs/getting_started/downloads.html> |
-OpenSceneGraph for WebAssembly | 3.7.0 | <https://github.com/EtharInc/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bethar/openscenegraph-3.7.0-wasm.zip>
+OpenSceneGraph for WebAssembly | 3.7.0 | <https://github.com/philip-lamb/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bgltf%2Bgdal/openscenegraph-3.7.0-wasm.zip>
 bash shell | | On macOS/Linux use Terminal<br> On Windows, use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10), [Cygwin](https://cygwin.com/install.html), or [git-bash](https://gitforwindows.org/).
 
 ### Installing OpenSceneGraph for WebAssembly
@@ -84,7 +84,7 @@ These commands will download and unpack the compiled OpenSceneGraph for WebAssem
 
 ```bash
 cd dependencies
-curl -LO https://github.com/EtharInc/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bethar/openscenegraph-3.7.0-wasm.zip
+curl -LO https://github.com/philip-lamb/OpenSceneGraph/releases/download/OpenSceneGraph-3.7.0-wasm%2Bgltf%2Bgdal/openscenegraph-3.7.0-wasm.zip
 unzip openscenegraph-3.7.0-wasm.zip
 ```
 
