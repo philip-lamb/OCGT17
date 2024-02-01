@@ -115,31 +115,24 @@ The application needs to be served from a webserver so it can be accessed on the
     *If testing locally, you may be able to configure your browser to use insecure HTTP-only by setting a flag. E.g. on Chrome the chrome://flags option "Treat insecure origins as secure" can be used as a per-client workaround).*
 
 2. The server origin must be configured with cross-origin isolation enabled. See details below.
-3. To enable streaming loading of WebAssembly .wasm blobs, ensure that there is a configured mime type on the server, associating `application/wasm` with the `wasm` file extension. If your site is served by Apache, the simplest method is to create a `.htaccess` file in the top-level directory of your application with this line included: `AddType application/wasm wasm`
+3. To enable streaming loading of WebAssembly .wasm blobs, ensure that there is a configured mime type on the server, associating `application/wasm` with the `wasm` file extension. If your site is served by Apache, the simplest method is to create a `.htaccess` file in the top-level directory of your application with this line included: `AddType application/wasm wasm`. Such an .htaccess file is included in this repo.
 
 ### WebAssembly requirements
 
 While WebAssembly itself is supported on all WebXR-capable browsers, OpenSceneGraph assumes availability of threading and so must (at present) be built with WebAssembly's threads support enabled. WebAssembly threads depends in turn on Javascript's `SharedArrayBuffer` type, which now has tighter [security requirements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements). You must ensure "cross origin isolation" is enabled for your site. (See below for details on how to enable "cross origin isolation".)
 
-Supported browsers:
+Supported WebXR-capable browsers:
 
-* **Oculus Browser** (Oculus Quest 1 and 2)
-* **Chrome for Windows and macOS** has SharedArrayBuffer enabled by default.
-* **Chrome for Android** requires a config flag to enable use of SharedArrayBuffer with WebAssembly threads. In Chrome, type `chrome://flags` in the URL bar, and then in the flags search box type `WebAssembly threads`. Tap the pop-up and change the value from "Default" to "Enabled".
-* **Microsoft Edge for Hololens 2** has SharedArrayBuffer enabled by default.
-* **Firefox** 79 and later (Windows, macOS, Linux).
-    
-  *Earlier versions of Firefox require a config flag to re-enable SharedArrayBuffer. In Firefox, type `about:config` in the URL bar, accept the warning, and then in the config search box type `javascript.options.shared_memory`. Click the ⇌ arrows symbol so that the value changes to `true` and close the config.*
+* **Meta Quest Browser** (Meta Quest)
+* **Wolvic Browser* (Meta Quest, Huawei VR Glass, HTC Vive Focus, Pico Interactive, Magic Leap 2, and Lynx)
+* **Google Chrome** (Chrome 92 and later, Windows and macOS, and Chrome 88 and later, Android).
+* **Microsoft Edge for Hololens 2**.
+* **Mozilla Firefox** (79 and later, Windows, macOS, Linux, also iOS).
+* **Apple Safari** (v15.2 and later, macOS/iOS).
 
-Unsupported browsers:
+Unsupported WebXR-capable browsers:
 
-* **Safari for macOS/iOS** does not yet support SharedArrayBuffer.
-* **Magic Leap Helio** (Magic Leap) browser does not yet support multithreaded WebAssembly (as of Leap OS 0.98.20) although Magic Leap have tentatively committed to re-enabling support in a future release.
-* **Firefox Reality** (Oculus, HTC Vive, Pico VR) has SharedArrayBuffer disabled by default. Unfortunately, there is no user-accessible means to change the configuration. (Previous versions of Firefox Reality had SharedArrayBuffer enabled by defaul).
-* **[Mozilla WebXR Viewer for iOS](https://apps.apple.com/app/webxr-viewer/id1295998056)** Since this is based on WebKit, like Safari for iOS, it does not support SharedArrayBuffer.
-
-![1](doc/enable-multithreaded-wasm-chrome-android.png)
-![2](doc/enable-js-sharedmem-ff.png)
+* **Magic Leap Helio** (Magic Leap 1) browser does not support multithreaded WebAssembly (as of Helio 0.98.20).
 
 ### Enabling "cross origin isolation"
 
